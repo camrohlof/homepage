@@ -1,6 +1,12 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, Modal, initializeStores } from '@skeletonlabs/skeleton';
+	import {
+		AppShell,
+		AppBar,
+		Modal,
+		initializeStores,
+		type ModalComponent
+	} from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js';
@@ -11,12 +17,17 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import NewAppModal from './jorbs/NewAppModal.svelte';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	const modalRegistry: Record<string, ModalComponent> = {
+		NewAppModal: { ref: NewAppModal }
+	};
 
 	initializeStores();
 </script>
 
-<Modal />
+<Modal components={modalRegistry} />
 <!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">

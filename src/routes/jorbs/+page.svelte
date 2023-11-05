@@ -2,9 +2,19 @@
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
+
 	export let data: PageData;
 
-	const jobs = data.jobs;
+	type Job = {
+		role: string;
+		company: string;
+		status: JobStatus;
+		applicationDate: Date;
+		lastUpdate: Date;
+	};
+
+	type JobStatus = 'Applied' | 'Rejected' | 'Ghosted';
+	const jobs: Job[] = data.jobs;
 
 	const modalStore = getModalStore();
 
@@ -13,6 +23,11 @@
 		title: 'Please Confirm',
 		body: 'This action is not reversable. Are you sure you wish to proceed?',
 		response: (r: boolean) => console.log('response:', r)
+	};
+
+	const newAppModal: ModalSettings = {
+		type: 'component',
+		component: 'NewAppModal'
 	};
 </script>
 
@@ -24,6 +39,9 @@
 				<tr>
 					<th>Role</th>
 					<th>Company</th>
+					<th>Status</th>
+					<th>Application Date</th>
+					<th>Last Update</th>
 					<th class="table-cell-fit" />
 				</tr>
 			</thead>
@@ -32,6 +50,9 @@
 					<tr>
 						<td>{row.role}</td>
 						<td>{row.company}</td>
+						<td>{row.status}</td>
+						<td>{row.applicationDate}</td>
+						<td>{row.lastUpdate}</td>
 						<td class="table-cell-fit">
 							<button
 								class="btn btn-sm variant-filled-error"
@@ -43,6 +64,8 @@
 			</tbody>
 		</table>
 		<div class="h-4" />
-		<button class="btn btn-sm variant-filled">New Application</button>
+		<button class="btn btn-sm variant-filled" on:click={() => modalStore.trigger(newAppModal)}
+			>New Application</button
+		>
 	</div>
 </div>
